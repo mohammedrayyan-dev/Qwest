@@ -7,23 +7,24 @@ function Navbar() {
   
   return (
     <nav>
-      <div class="flex items-center justify-between space-x-10 pt-2">
+      <div class="flex justify-between items-center bg-gray-100 p-4 sm:py-2">
 
       {/* Logo + Title */}
-      <div class="flex items-center text-left pl-8 py-2 space-x-3">
-        <img src={QwestLogo} alt="QwestLogo" class="w-7 h-7" />
-        <h1 class="text-3xl font-semibold text-[#111827]">Qwest</h1>
+      <div class="flex flex-start items-center space-x-2 sm:py-2">
+        <img src={QwestLogo} alt="QwestLogo" class="w-4 h-4 sm:w-7 sm:h-7" />
+        <h1 class="text-xl font-semibold text-[#111827] sm:text-3xl">Qwest</h1>
       </div>
-
-      <div class="flex items-center space-x-5 pr-8 pt-2">
-        <Link to="/signin" class="text-lg text-[#111827] font-semibold">
+      
+      {/* Sign in + Join Free */}
+      <div class="sm:flex sm:items-center sm:space-x-3">
+        <Link to="/signin" class="text-sm text-[#111827] font-semibold sm:text-lg">
           Sign In
         </Link>
         <button
-       onClick={() => navigate("/signup")}
-       class="border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black cursor-pointer transition-colors duration-300 flex justify-center items-center px-4 py-2 text-lg font-semibold rounded-lg">
-        Join Free
-      </button>
+        onClick={() => navigate("/signup")}
+        class="hidden sm:p-2 sm:text-md sm:font-semibold sm:rounded-xl sm:border sm:border-[#D4AF37] sm:block sm:text-lg sm:text-[#D4AF37] sm:hover:bg-[#D4AF37] sm:hover:text-black sm:cursor-pointer sm:transition-colors sm:duration-300 ">
+         Join Free
+        </button>
       </div>
       </div>
 

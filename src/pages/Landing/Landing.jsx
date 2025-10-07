@@ -10,36 +10,38 @@ const Landing = () => {
   return (
     <>
       <Navbar />
-      <div class="grid grid-cols-2 bg-[#ffffff] h-full w-screen">
 
-      {/* Left Side */}
+      <div class="bg-[#ffffff] h-full flex flex-col items-center w-screen sm:grid sm:grid-cols-2">
 
-      <div class="pl-15 pt-27 flex flex-col align-center">
-       <div class="flex flex-col space-y-2 pr-25">
-       <h3 class="text-7xl font-bold text-[#111827]">
-        Turn chaos into clarity.
+      {/* Main Details */}
+      <div class="flex flex-col items-center sm:items-start pt-14 sm:pt-0">
+       <h3 class="text-2xl font-bold text-[#111827] sm:text-7xl sm:text-left sm:px-15">
+        Turn chaos into 
        </h3>
-       <h3 class="text-6xl font-bold text-[#111827] pb-6">
+       <h3 class="text-2xl font-bold text-[#111827] sm:text-7xl sm:text-left sm:px-15 sm:pt-1">
+       clarity.
+       </h3>
+       <h3 class="text-lg font-bold text-[#111827] pt-1 sm:text-4xl sm:text-left sm:px-15 sm:pt-3">
         Your day, your way
        </h3>
-       </div>
-       <p class="max-w-lg pb-6 text-[#4B5563] text-lg">
+       <p class="text-sm text-[#4B5563] text-center pt-2 px-4 sm:text-lg sm:text-left sm:px-15 sm:pt-4">
         From work projects to personal reminders, manage everything effortlessly. 
         With real-time updates, smart organization, and a clean interface, 
         staying productive has never been easier.
        </p>
        <button
        onClick={() => navigate("/signup")}
-       class="bg-[#D4AF37] hover:bg-[#B9972F] cursor-pointer transition-colors duration-300 flex gap-2 justify-center w-65 font-bold text-lg rounded-lg  py-3 text-white shadow-md">
+       class="bg-[#D4AF37] hover:bg-[#B9972F] mt-3 w-45 text-sm font-bold rounded-lg px-3 py-2 text-white shadow-md cursor-pointer transition-colors duration-300 sm:mt-5 sm:w-60 sm:text-lg sm:mx-15 sm:py-3">
         Start Organizing Today
       </button>
       </div>
 
-      {/* Right Side */}
-      <div class="mt-25 h-130 w-170 flex items-center justify-center shadow-lg rounded-lg">
+      {/* Hero Image */}
+      <div class="mt-12 h-55 w-70 flex justify-center shadow-lg rounded-lg sm:mt-22 sm:h-130 sm:w-170">
         <img src={HeroPageImage} 
         alt="To-Do App image" 
-        class="p-5 h-120 w-170" />
+        class="p-5 h-60 w-85 sm:h-120 sm:w-170"
+        />
       </div>
       </div>
       </>

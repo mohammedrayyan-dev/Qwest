@@ -9,16 +9,18 @@ import {
   Clock, 
   ClipboardList } from "lucide-react";
   import { logout } from "../../firebase";
+import { updateDoc } from "firebase/firestore";
 
 const Home = () => {
 
   const [tasks, setTasks] = useState([]);
-
+  const [editingTaskId, setEditingTaskId] = useState("null")
+  
   const [taskText, setTaskText] = useState("");
   const [taskDate, setTaskDate] = useState("");
   const [taskTime, setTaskTime] = useState("");
-  const [taskPriority, setTaskPriority] = useState("Medium");
-  const [activeTab, setActiveTab] = useState("today");
+  const [taskPriority, setTaskPriority] = useState("Priority");
+  const [activeTab, setActiveTab] = useState("overview");
 
   const addTask = () => {
     if(taskText.trim() === "") return;
@@ -75,12 +77,44 @@ const Home = () => {
     }
   })
 
+  const startEditing = (task) => {
+    setEditingTaskId(task.id);
+    setTaskText(task.text);
+    setTaskDate(task.date);
+    setTaskTime(task.time);
+    setTaskPriority(task.priority);
+  }
+
+  const handleSaveEdit = async (id) => {
+    const taskRef = doc(db, "tasks", id)
+    await updateDoc(taskRef, {
+      text: taskText,
+      date: taskDate,
+      time: taskTime,
+      priority: taskPriority
+    });
+
+    setEditingTaskId("null");
+    setTaskText("");
+    setTaskDate("");
+    setTaskTime("");
+    setTaskPriority("");
+  }
+
+  const handleCancelEdit = () => {
+    setEditingTaskId("null");
+    setTaskText("");
+    setTaskDate("");
+    setTaskTime("");
+    setTaskPriority("");
+  }
+
   return (
     <div class="flex h-screen">
       <div class="w-[18%] relative flex flex-col items-center shadow-lg">
     <div class="flex items-center mt-4 mb-5 text-left space-x-3">
       <img src={QwestLogo} alt="QwestLogo" class="w-7 h-7" />
-      <h1 class="text-3xl font-semibold text-[#111827]pb-">Qwest</h1>
+      <h1 class="text-3xl font-semibold text-[#111827]">Qwest</h1>
     </div>
 
     <div class=" mt-3 flex flex-col space-y-6">
@@ -125,7 +159,6 @@ const Home = () => {
         <span class="text-lg font-medium">Completed</span>
       </button>
     </div>
-
     <h3 class="absolute position bottom-6 text-sm left-14 text-gray-500">
       © 2025 Qwest, Inc.
     </h3>
@@ -143,6 +176,7 @@ const Home = () => {
         Log Out
       </button>
       </div>
+  
       {activeTab !== "completed" && (
       <div class="mt-5 flex space-x-3 h-12">
       <input 
@@ -152,7 +186,6 @@ const Home = () => {
       onChange={(e) => setTaskText(e.target.value)}
       class="ml-12 w-75 pl-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400"
       />
-
       <div class="flex space-x-3">
         <input 
         type="date"
@@ -167,17 +200,16 @@ const Home = () => {
         class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400"
         />
       </div>
-
       <select
       value={taskPriority}
       onChange={(e) => setTaskPriority(e.target.value)}
       class="w-54 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400"
       >
+        <option disabled hidden>Priority</option>
         <option>Low</option>
         <option>Medium</option>
         <option>High</option>
       </select>
-
       <button 
       onClick={addTask} 
       class="bg-[#374151] hover:bg-[#1F2937] w-35 font-semibold rounded-lg text-white transition-colors duration-300">
@@ -197,6 +229,13 @@ const Home = () => {
           class="bg-white border border-gray-200 p-3 rounded-lg shadow-sm"
           >
             <div class="flex items-center pl-2 space-x-4">
+            {activeTab !== "completed" && (
+            <input
+            type="checkbox"
+            onClick={() => completedTask(task.id)}
+            class="bg-gray-100 appearance-none px-2 py-2 cursor-pointer rounded hover:bg-blue-100 transition-all duration-300 rounded border border-gray-300 checked:bg-blue-500 checked:border-blue-600"
+            />
+            )}
             <p class="text-gray-800 ml-0 font-extralightbold text-lg w-full">
               {task.text}
             </p>
@@ -211,7 +250,7 @@ const Home = () => {
             </p>
             </div>
             <span
-            class={`p-2 flex justify-center items-center text-sm w-150 rounded-full ${
+            class={`px-1 py-2 flex justify-center items-center text-sm w-150 rounded-full ${
               task.priority === "High"
               ? "bg-red-100 text-red-700"
               : task.priority === "Medium"
@@ -219,20 +258,34 @@ const Home = () => {
               : "bg-green-100 text-green-700"
             }`}
             >
-              Priority: {task.priority}
+              {task.priority}
             </span>
             <div class="flex space-x-4">
               {activeTab !== "completed" && (
+              <>
               <button
-              onClick={() => completedTask(task.id)}
-              class="px-3 py-1 bg-green-500 cursor-pointer text-white rounded hover: bg-green-600"
+              onClick={() => startEditing(task.id)}
+              class="px-3 py-1 bg-blue-500 text-white cursor-pointer rounded hover:bg-blue-600"
               >
-                Complete
+                Edit
               </button>
+              <button
+              onClick={() => handleSaveEdit(task)}
+              class="px-3 py-1 bg-green-500 text-white cursor-pointer rounded hover:bg-green-600"
+              >
+                Save
+              </button>
+              <button
+              onClick={() => handleCancelEdit(task.id)}
+              class="px-3 py-1 bg-gray-500 text-white cursor-pointer rounded hover:bg-gray-600"
+              >
+                Cancel
+              </button>
+              </>
               )}
               <button
               onClick={() => deleteTask(task.id)}
-              class="px-3 py-1 bg-red-500 text-white cursor-pointer rounded hover: bg-red-600"
+              class="px-3 py-1 bg-red-500 text-white cursor-pointer rounded hover:bg-red-600"
               >
                 Delete
               </button>
