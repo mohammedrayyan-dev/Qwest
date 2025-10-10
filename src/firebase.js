@@ -34,23 +34,41 @@ const signup = async (name, email, password) => {
             authProvider: "local",
             email,
         });
+        return toast.success("Account created successfully!", {
+          autoClose: 2000,
+          pauseOnHover: false
+        })
     } catch (error) {
         console.log(error);
-        toast.error(error.code.split("/")[1].split("-").join(" "));
+        toast.error(error.code.split("/")[1].split("-").join(" "), {
+            autoClose: 3000,
+            pauseOnHover: false,
+        });
     }
 }
 
 const login = async (email, password) => {
     try {
         await signInWithEmailAndPassword(auth, email, password);
+        return toast.success("Logged in successfully!", {
+            autoClose: 2000,
+            pauseOnHover: false
+        })
     } catch (error) {
         console.log(error);
-        toast.error(error.code.split("/")[1].split("-").join(" "));
+        toast.error(error.code.split("/")[1].split("-").join(" "),{
+            autoClose: 3000,
+            pauseOnHover: false,
+        });
     }
 }
 
 const logout = () => {
     signOut(auth);
+    return toast.success("Logged out successfully!", {
+      autoClose: 2000,
+      pauseOnHover: false
+    })
 } 
 
 export {auth, db, login, signup, logout};

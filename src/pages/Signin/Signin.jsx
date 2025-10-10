@@ -2,6 +2,7 @@ import { useState } from "react";
 import { login } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import AuthLayout from "/src/components/AuthLayout/AuthLayout.jsx"
+import { toast } from "react-toastify";
 
 const Signin = () => {
 
@@ -12,7 +13,7 @@ const Signin = () => {
 
   const userAuth = async (event) => {
     event.preventDefault();
-    await login(email, password);
+    await login(email, password); 
   }
 
   return (
@@ -24,29 +25,29 @@ const Signin = () => {
           value={email} 
           onChange={(e) => {setEmail(e.target.value)}} 
           placeholder="Enter your email" 
-          class="w-50 px-2 py-3 text-gray-800 text-xs border rounded-lg border-gray-800 sm:w-65 sm:px-4 sm:py-3 sm:text-lg"
+          class="w-50 px-2 py-3 text-gray-800 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:outline-none sm:w-65 sm:px-4 sm:py-3 sm:text-lg"
           />
           <input 
           type="password"
           value={password} 
           onChange={(e) => {setPassword(e.target.value)}} 
           placeholder="Enter your password"
-          class="w-50 px-2 py-3 text-gray-800 text-xs border rounded-lg border-gray-800 sm:w-65 sm:px-4 sm:py-3 sm:text-lg"
+          class="w-50 px-2 py-3 text-gray-800 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:outline-none sm:w-65 sm:px-4 sm:py-3 sm:text-lg"
           />
 
           <button 
           type="submit"
-          class="w-50 px-2 py-3 font-bold rounded-lg text-sm text-white shadow bg-[#D4AF37] hover:bg-[#B38F1D] transition-colors duration-300 sm:text-lg sm:w-65 sm:px-4 sm:py-3 sm:cursor-pointer"
+          class="w-50 px-2 py-3 font-bold border border-gray-300 rounded-lg text-sm text-white shadow-md bg-yellow-500 hover:bg-yellow-600 transition-all duration-300 sm:shadow-lg sm:text-lg sm:w-65 sm:px-4 sm:py-3 sm:cursor-pointer"
           >
             Sign In
           </button>
 
           <div class="pb-5 text-center">
-          <p class="text-xs flex flex-col sm:text-lg sm:flex-row sm:gap-1">
+          <p class="text-xs flex flex-col text-gray-600 sm:text-lg sm:flex-row sm:gap-2">
             Don't have an account? 
             <span 
             onClick={() => navigate("/signup")} 
-            class="pt-1 pb-3 text-gray-700 font-semibold sm:cursor-pointer sm:pt-0 sm:pb-0">
+            class="pt-1 pb-3 text-yellow-600 hover:text-yellow-700 font-semibold sm:cursor-pointer sm:pt-0 sm:pb-0">
               Sign Up
             </span>
           </p>
